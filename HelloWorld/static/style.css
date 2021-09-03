@@ -1,0 +1,12 @@
+body{
+    background-color: beige;
+    background-image: '../static/css/style.css';
+}
+
+p{
+    color: green;
+}
+
+h1{
+    color: #2394C7;
+}

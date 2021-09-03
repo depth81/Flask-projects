@@ -1,0 +1,13 @@
+{% extends "structure.html" %}
+
+
+{% block main %}
+    <h1>This is the HomePage showed from index.html file</h1>
+    <form action="/", method="POST">
+        <input type="text" placeholder="userName" name="userName">
+        <input type="password" placeholder="password" name="password">
+        <input type="submit">
+    </form>
+    <p>{{message}}</p>  
+{% endblock main  %}
+
