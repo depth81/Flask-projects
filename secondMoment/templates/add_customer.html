@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}
+Add Customer
+{% endblock %}
+{% block content %}
+<div class="container">
+    <section class="section">
+        <div class="columns">
+            <div class="column is-one-third">
+                <h3 class="is-size-3">Add customer</h3>
+                <form action="{{url_for('add_customer')}}" method="POST">
+                    <label for="name">Name:</label>
+                    <input required type="text" class="form-control" placeholder="Name" name="name" id="name">
+                    <label for="status">Status:</label>
+                    <input required type="text" class="form-control" placeholder="Status" name="status" id="status">
+                    <label for="mobile">Mobile:</label>
+                    <input required type="text" class="form-control" placeholder="Mobile" name="mobile" id="mobile">
+                    <br>
+                    <button type="submit" class="btn btn-success">Save</button>                              
+                    <a href="{{url_for('index')}}" class="btn btn-primary">Back</a>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

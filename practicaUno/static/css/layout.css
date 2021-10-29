@@ -1,0 +1,47 @@
+body{
+    background-color:aliceblue;
+    padding: 0;
+    margin: 0;
+    height: 700px;
+}
+h2{
+    color: blue;
+    text-align: center;
+}
+
+#btninicio{
+    margin: 2px 1em 0 auto; 
+    background-color: #33FF77; 
+    padding: 15px 32px;
+}
+
+#btnarmaplan{
+    margin: 2px 1em 0 auto; 
+    background-color: #33F9FF; 
+    padding: 15px 32px;
+}
+
+#btndestino{
+    margin: 2px 1em 0 auto; 
+    background-color: #E8A6E1; 
+    padding: 15px 32px;
+}
+
+.btncontainer{
+    text-align: center;
+}
+
+.cuerpo{
+    height: 500px;
+}
+
+.footercont{
+    text-align: center;
+    font-size: 1.2rem;
+    color:gray;
+    background-color: bisque;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: auto;
+}

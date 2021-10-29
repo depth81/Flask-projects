@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}
+Add Invoice
+{% endblock %}
+{% block content %}
+<div class="container">
+    <section class="section">
+        <div class="columns">
+            <div class="column is-one-third">
+                <h3 class="is-size-3">Add invoice</h3>
+                <form action="{{url_for('add_invoice')}}" method="POST">
+                    <label for="date">Date:</label>
+                    <input required type="text" class="form-control" placeholder="Date" name="date" id="date">
+                    <label for="id">id:</label>
+                    <input required type="text" class="form-control" placeholder="Id" name="id" id="id">
+                    <label for="status">Price:</label>
+                    <input required type="text" class="form-control" placeholder="Price" name="price" id="price">
+                    <label for="balance">Balance:</label>
+                    <input required type="text" class="form-control" placeholder="Balance" name="balance" id="balance">
+                    <br>
+                    <button type="submit" class="btn btn-success">Save</button>                              
+                    <a href="{{url_for('invoice')}}" class="btn btn-primary">Back</a>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

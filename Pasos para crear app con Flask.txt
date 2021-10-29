@@ -1,0 +1,403 @@
+1. Crear una carpeta para la aplicaci�n
+2. Instalar virtualenv de manera global 
+    en el sistema operativo:
+
+	pip install virtualenv
+
+3. Posicionarse en la carpeta del proyecto y
+    crear un entorno virtual con el nombre
+    env o puede tener otro nombre:
+
+	virtualenv -p python env 
+
+4. Activar el entorno virtual con el siguiente
+  comando (se puede autocompletar presionando tab
+  al ir escribiendo la ruta:
+
+	.\env\Scripts\activate
+
+	aparece un prompt con inicio
+	(env) D:\ProyFlask\Demo1> (por ejemplo)
+
+5. Ejecutar la siguiente instrucci�n dentro del entorno
+	
+	pip list
+
+6. Instalar el paquete de flask, con la siguiente
+  instrucci�n:
+	
+	pip install flask
+
+7. Ejecutar: pip list  para listar paquetes
+  dentro del proyecto
+
+8. Crear una carpeta (dentro del proyecto), preferiblemente con el nombre app:
+9. Dentro de la carpeta app, se crea un archivo llamado app.py
+  Este archivo debe tener el siguiente codigo (b�sico):
+	
+	from flask import Flask
+
+	app=Flask(__name__)
+
+	#__name__ es un workspace
+
+	# "__main__" es el nombre del �mbito en el que se ejecuta el 
+	# c�digo de nivel superior (tu programa principal)
+
+	# El int�rprete pasa el valor del atributo __name__ a la cadena '__main__'
+
+	# Chequear si estamos en el archivo inicial main
+	if __name__ == "__main__":
+    app.run()
+	
+10. Ejecutar la app a trav�s de la siguiente
+    instrucci�n:
+
+	python .\app\app.py
+
+	Chequear en el navegador la url
+	127.0.0.1:5000 o localhost:5000
+
+11. Detener el servidor con ctrl+c
+12. Ir al archivo app.py, modificar con el siguiente
+    codigo:
+	
+	from flask import Flask
+
+	app=Flask(__name__)
+
+	#Crear la ruta de inicio o home page
+	@app.route('/') # decorador para la ruta inicio
+	def index():
+    return '<h1>Hola mundo desde Flask 3</h1>'
+
+	# Chequear si estamos en el archivo inicial main
+	if __name__ == "__main__":
+    app.run(debug=True,port=5200) ## para activar modo de depuraci�n para tomar actualizaciones del codigo
+    
+13. Dentro de la carpeta app, crear una subcarpeta llamada
+    templates
+14. En la carpeta templates, crear un archivo con el nombre
+    index.html (con cualquier info)
+15. Modificar el archivo app.py, para que pueda invocar 
+    el archivo index.html que est� en la carpeta templates
+    Recordar importar render_template
+
+	from flask import Flask,render_template
+
+	#__name__ es un workspace
+
+	# "__main__" es el nombre del �mbito en el que se ejecuta el 
+	# c�digo de nivel superior (tu programa principal)
+
+	# El int�rprete pasa el valor del atributo __name__ a la cadena '__main__'
+	app=Flask(__name__)
+
+	#Crear la ruta de inicio o home page
+	@app.route('/') # decorador para la ruta inicio
+		def index():
+        # return '<h1>Hola mundo desde Flask</h1>'
+        return render_template('index.html')
+
+	# Chequear si estamos en el archivo inicial main
+	if __name__ == "__main__":
+    app.run(debug=True,port=5100) ## para activar modo de depuraci�n para tomar actualizaciones del codigo
+    
+16. En el archivo app.py, pasar datos al archivo index.html para que sea din�mica la p�gina:
+	
+from flask import Flask,render_template
+
+#__name__ es un workspace
+
+# "__main__" es el nombre del �mbito en el que se ejecuta el 
+# c�digo de nivel superior (tu programa principal)
+
+# El int�rprete pasa el valor del atributo __name__ a la cadena '__main__'
+app=Flask(__name__)
+
+#Crear la ruta de inicio o home page
+@app.route('/') # decorador para la ruta inicio
+def index():
+    # return '<h1>Hola mundo desde Flask</h1>'
+    programas = ['Desarrollo de Software','Redes','Sistemas','Video Juegos','Administraci�n']
+    """datos = {
+        'titulo':'Sistema Acad�mico',
+        'bienvenida':'Saludos desde CESDE',
+        'programas':programas,
+        'cantidadprogs':len(programas)
+    }"""
+    datos = {
+        'titulo':'Sistema Acad�mico',
+        'bienvenida':'Saludos desde CESDE',
+        'programas':['Desarrollo de Software','Redes','Sistemas','Video Juegos','Administraci�n','Contadur�a'],
+        'cantidadprogs':len(programas),
+        'valorcuota':1200000
+        }
+    return render_template('index.html',data=datos)
+    
+# Ruta para login con par�metro
+@app.route("/login/<string:user>/")
+def show_post(user):
+    return render_template("login.html", user=user)
+
+# Chequear si estamos en el archivo inicial main
+if __name__ == "__main__":
+    app.run(debug=True,port=5100) ## para activar modo de depuraci�n para tomar actualizaciones del codigo
+    
+
+
+17. En el archivo index.html, interpolar (Motor de plantillas Jinja2)la informaci�n enviada a este archivo, :
+	
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+
+    <title>Sistema de Notas</title>
+  </head>
+  <body>
+    <h1>Hola mundo desde Flask</h1>
+    <h2>{{data.titulo}}</h2>
+    <h3>{{data.bienvenida}}</h3>
+    {% if data.cantidadprogs > 0 %}
+    <ul>
+      {% for p in data.programas %}
+      <li>{{p}}</li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <h2>
+      No Existen programas para mostrar
+    </h2>
+    {% endif %}
+
+    <span>Cantidad de Programas: {{data.cantidadprogs}}</span>
+
+    <table class="table table-hover table-bordered">
+      {% for p in data.programas %}
+      <tr>
+        <td>{{p}}</td>
+      </tr>
+      {% endfor %}
+    </table>
+    <select>
+      {% for p in data.programas %}
+        <option value="{{p}}">{{p}}</option>
+      {% endfor %}
+    </select>
+    <br>
+    <span>
+      Valor Cuota: {{"$%.2f"|format(data.valorcuota)}}
+    </span>
+
+  --- archivo login.html ---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio de Sesi�n</title>
+</head>
+<body>
+    <h2>{{user}}</h2>
+</body>
+</html>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+
+  </body>
+</html>
+--------
+18. Dentro de la carpeta templates, crear una plantilla con el nombre layout.html. Pasar todo lo que tiene 
+    el archivo index.html, quedando de la siguiente manera (archivo layout.html):
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+
+    <title>{% block title %}{% endblock %}</title>
+  </head>
+  <body>
+    {% block body %}
+    {% endblock %}
+    
+  </body>
+</html>
+
+19. Cambiar el contenido del archivo index.html, quedando de la siguiente manera:
+	
+{% extends './layout.html' %}
+
+{% block title %}{{data.titulo}}{% endblock %}
+{% block body %}
+<h3>{{data.bienvenida}}</h3>
+{% if data.cantidadprogs > 0 %}
+  <ul>
+    {% for p in data.programas %}
+    <li>{{p}}</li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <h2>
+    No Existen programas para mostrar
+  </h2>
+{% endif %}
+
+<span>Cantidad de Programas: {{data.cantidadprogs}}</span>
+
+<table class="table table-hover table-bordered">
+  {% for p in data.programas %}
+  <tr>
+    <td>{{p}}</td>
+  </tr>
+  {% endfor %}
+</table>
+<select>
+  {% for p in data.programas %}
+    <option value="{{p}}">{{p}}</option>
+  {% endfor %}
+</select>
+<br>
+<span>
+  Valor Cuota: {{"$%.2f"|format(data.valorcuota)}}
+</span>
+{% endblock %}
+
+Refrescar el navegador para chequear su funcionamiento....
+
+20. Aplicar css y js a la plantilla layout.html para que se herede a las plantillas hijas (index.html)
+	a. Crear, dentro de la carpeta app, un subcarpeta con el nombre static - se tiene que llamar as� -
+	(archivos est�ticos como css)
+	b. Crear, dentro de la carpeta static, crear la subcarpetas CSS y JS
+	c. Dentro de la carpeta CSS, crear el archivo layout.css y poner el siguiente c�digo
+		body{
+      background-color: orange;
+		}
+	d. Ir a la plantilla layout.html e invocar este archivo con la siguiente instrucci�n:
+		<link rel="stylesheet" href="{{ url_for('static',filename='css/layout.css')}}">
+		
+		Refrescar el navegador para chequear su funcionamiento....
+	e. Dentro de la carpeta JS, crear un archivo llamado layout.js, por ejemplo, con la siguiente 
+		instrucci�n:
+		alert('Hola mundo desde JS');
+	f. Ir al archivo layout.html y antes de cerrar la etiqueta body (</body>), especificar la siguiente
+		instrucci�n:
+		<script src="{{ url_for('static',filename='js/layout.js')}}"></script>
+
+		Refrescar el navegador para chequear su funcionamiento....
+
+21. Controlar acceso a recurso (ruta) no encontrado:
+	a. Ir al archivo app.py y agregar la siguiente funci�n:
+
+		def pagina_no_encontrada(error):
+    return render_template('404.html'),404
+
+	b. Crear el archivo 404.html, dentro de la carpeta templates, con el siguiente c�digo:
+		
+		{% extends './layout.html' %}
+
+		{% block title %}Error! P�gina no Encontrada{% endblock %}
+		{% block body %}
+    <h2>Ooops, p�gina no encontrada</h2>
+		{% endblock %}
+	c. Hacer referencia al manejador de errores, realizando la siguiente instrucci�n, antes de app.run ...
+		(archivo app.py):
+		
+		app.register_error_handler(404, pagina_no_encontrada)
+	d. Se puede redireccionar este error de p�gina a una vista o funci�n, de la siguiente manera:
+		
+		def pagina_no_encontrada(error):
+        #return render_template('404.html'),404
+        # redireccionar a una vista o funci�n
+        return redirect(url_for('index'))
+
+		Recordar poner la librer�a de url_for y redirect en el from ... import, as� por ejemplo:
+			from flask import Flask,render_template,url_for,redirect
+			"""from flask.helpers import url_for
+			from werkzeug.utils import redirect"""
+22. Ejecutar unas instrucciones antes y despu�s de una petici�n (request y response) 
+	con decorador before_request y after_request (archivo app.py, despu�s de app=Flask(__name__)):
+	
+	@app.before_request
+	def before_request():
+    print("Antes de la petici�n")
+
+	@app.after_request
+	def after_request(response):
+      print("Despues de la petici�n")
+      return response
+23. Mostrar informaci�n, en formato de json (API), de una tabla de base de datos:
+	a. Instalar, dentro del directorio virtual, el paquete de mysql:
+		pip install flask-mysqldb
+		pip list
+	b. Importar el paquete de mysql en el archivo app.py
+		from flask_mysqldb import MySQL
+	c. Configurar los parametros para la conexi�n a la base de datos de mysql 
+		(debajo de app = Flask(__name__):
+		
+		app.config['MYSQL_HOST'] = 'localhost'
+		app.config['MYSQL_USER'] = 'root'
+		app.config['MYSQL_PASSWORD'] = ''
+		app.config['MYSQL_DB'] = 'company'
+
+		conexion = MySQL(app) # vinculo entre la aplicaci�n y la bd
+
+	d. Crear la ruta para mostrar los datos en formato json (antes de app.register y/o app.run)
+		
+		@app.route('/companies')
+		def listar_companies():
+        data = {}
+        try:
+            cursor = conexion.connection.cursor()
+            sql = "SELECT id, name, salary FROM employee ORDER BY name"
+            cursor.execute(sql)
+            companies = cursor.fetchall()
+            # print(companies)
+            # data['mensaje'] = 'Exito'
+            data['companies'] = companies
+        except Exception as ex:    
+                data['mensaje'] = 'Error ...'
+        return jsonify(data) # recordar importar jsonify
+		
+		Actualizar el navegador ... y verificar....
+		https://www.youtube.com/watch?v=-1DmVCPB6H8&ab_channel=UskoKruM2010
+
+
+-----------
+# demo para redireccionar link de otra pagina, invocando un endpoint
+@app.route('/pagina')
+def pagina():
+    return render_template('pagina.html')
+
+--- pagina.html ---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagina</title>
+</head>
+<body>
+    <h1>
+        The template has been rendered!!!<br>
+        index es un endpoint o funci�n de una ruta
+        <a href="{{ url_for('index') }}">Ir a Index</a>
+        </h1>
+</body>
+</html>
+
+	
+	
+

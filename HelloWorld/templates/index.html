@@ -1,13 +1,47 @@
-{% extends "structure.html" %}
+{% extends 'maestra.html' %}
+{% block titulo %}Mi primera pagina con FLASK{% endblock %}
+{% block contenido %}
 
+    <h2>{{data.subtitulo}}{{data.usuario}}</h2>
+    <br>
+    <!-- {% if data.cantVehiculos > 0 %}
+        <ul>
+            {% for vehiculo in data.vehiculos %}
+            <li>{{vehiculo}}</li>
+            {% endfor %}
+        </ul>
+        <div>Referencia de Renault: {{data.referencias[1]}}</div>
+    {% else %}
+        <h3>No existen vehiculos para mostrar</h3>
+    {% endif %} -->
+    <!-- <select>
+        {% for vehiculo in data.vehiculos %}
+        <option value="{{vehiculo}}">{{vehiculo}}</option>
+        {% endfor %}
+    </select> -->
+    <ul>
+        {% for vehiculo in data.vehiculos %}
+            {% set i=0 %}
+            {% if i<5 %}
+                <li>{{vehiculo}}:{{" "+data.referencias[loop.index-1]}}</li> 
+            {% endif %}
+            {% set i=i+1 %}
+        {% endfor %}
+    </ul>
 
-{% block main %}
-    <h1>This is the HomePage showed from index.html file</h1>
-    <form action="/", method="POST">
-        <input type="text" placeholder="userName" name="userName">
-        <input type="password" placeholder="password" name="password">
-        <input type="submit">
-    </form>
-    <p>{{message}}</p>  
-{% endblock main  %}
+    <table class='table table-hover table-bordered'>
+        <th>MARCA</th>
+        <th>MODELO</th>
+        <th>PRECIO</th>
+        {% set count = namespace(a=0) %}
+        {% for vehiculo in data.vehiculos %}
+            <tr>
+                <td>{{vehiculo}}</td>
+                <td>{{data.referencias[loop.index-1]}}</td>
+                <td>{{data.precios[loop.index-1]}}</td>
+            </tr>
+            {% set count.a = count.a+1 %}
+        {% endfor %}
+    </table>
 
+{% endblock %}
