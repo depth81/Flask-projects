@@ -1,4 +1,3 @@
-from datetime import date
 from flask import Flask, render_template, url_for, request
 from werkzeug.utils import redirect
 import customer_controller

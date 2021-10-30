@@ -25,7 +25,8 @@ def get_invoice():
     myConnection = get_connection()
     invoices=[]
     with myConnection.cursor() as cursor:
-        cursor.execute("SELECT number, date, id, price, balance FROM invoice")
+        '''cursor.execute("SELECT number, date, id, price, balance FROM invoice")'''
+        cursor.execute("SELECT invoice.number, invoice.date, invoice.id, invoice.price, invoice.balance, customer.name from customer INNER join invoice ON customer.id = invoice.id")
         invoices=cursor.fetchall()
     myConnection.close()
     return invoices
