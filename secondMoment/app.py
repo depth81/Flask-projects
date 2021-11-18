@@ -1,14 +1,18 @@
-from flask import Flask, render_template, url_for, request
+import os
+from flask import Flask, render_template, url_for, flash, request
 from werkzeug.utils import redirect
 import customer_controller
 import invoice_controller
+import user_controller
 import pyautogui
+from werkzeug.utils import secure_filename
 
 app=Flask(__name__)
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
-"""
-Definición de rutas
-"""
+#Configuring the file to store the files
+app.config['UPLOAD_FOLDER'] = 'static/images'
+
 @app.route('/')
 @app.route('/index')
 def index():
@@ -27,7 +31,7 @@ def add_customer():
     customer_controller.add_customer(name,status,mobile)
     return redirect('/')
 
-#Get the user to edit
+#Get the customer to edit
 @app.route('/edit_customer/<int:id>')
 def edit_customer(id):
     customer = customer_controller.get_customer_id(id)
@@ -111,7 +115,57 @@ def delete_invoice():
     return redirect('/invoice')
 
 
+#---USER---
+@app.route('/user')
+def user():
+    users = user_controller.get_user()
+    return render_template('user.html',users=users)
+
+@app.route('/add_user_form')
+def add_user_form():
+    return render_template('add_user.html')
+
+@app.route('/add_user',methods=['POST'])
+def add_user():
+    name = request.form['name']
+    email = request.form['email']
+    password = request.form['password']
+    my_Data = request.files['ufilephoto']
+    filename = secure_filename(my_Data.filename)
+    my_Data.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
+    user_controller.add_user(name, email, password)
+    pyautogui.alert(text='Successfully saved', title='MESSAGE', button='OK')
+    """ flash('The file has been uploaded') """
+    return redirect('/user')
+
+#Get the user to edit
+@app.route('/edit_user/<int:id>')
+def edit_user(id):
+    user = user_controller.get_user_id(id)
+    return render_template('edit_user.html',user=user)
+#edit the data
+@app.route('/update_user',methods=['POST'])
+def update_user():
+    #Get data from the invoked form
+    name = request.form['name']
+    email = request.form['email']
+    password = request.form['password']
+    id = request.form['id']
+    my_Data = request.files['ufilephoto']
+    filename = secure_filename(my_Data.filename)
+    my_Data.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
+    user_controller.update_user(name,email,password,id)
+    pyautogui.alert(text='Successfully edited!', title='MESSAGE', button='OK')
+    """ flash('The file has been uploaded') """
+    return redirect('/user')
+    
+@app.route("/delete_user", methods=["POST"])
+def delete_user():
+    id = request.form['id']
+    user_controller.delete_user(id)
+    return redirect('/user')
+
+
 # The server is running
 if __name__ == "__main__":
-    #app.run(host='0.0.0.0', port=8000, debug=True)
     app.run(port=5300, debug=True)

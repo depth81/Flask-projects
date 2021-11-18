@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}
+Edit User
+{% endblock %}
+{% block content %}
+<div class="container">
+    <section class="section">
+        <div class="columns">
+            <div class="column is-one-third">
+                <h3 class="is-size-3">Edit user</h3>
+                <form action="{{url_for('update_user')}}" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="id" value="{{user[0]}}">
+                    <label for="name">Name:</label>
+                    <input required type="text" class="form-control" placeholder="Name" name="name" id="name">
+                    <label for="email">Email:</label>
+                    <input required type="email" class="form-control" placeholder="Email" name="email" id="email">
+                    <label for="password">Password:</label>
+                    <input required type="password" class="form-control" placeholder="Password" name="password" id="password">
+                    <label for="ufilephoto">Photo:</label>
+                    <br>
+                    <input type="file" id="ufilephoto" name="ufilephoto" accept=".jpg,.png,.jfif" required>
+                    <br>
+                    <br>
+                    <!-- <button type="submit" id="btnupload" class="btn btn-primary">upload</button>
+                    <br> -->
+                    <button type="submit" class="btn btn-success">Save</button>                              
+                    <a href="{{url_for('user')}}" class="btn btn-primary">Back</a>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
