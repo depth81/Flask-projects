@@ -47,3 +47,12 @@ def get_user_id(id):
         user=cursor.fetchone()
     myConnection.close()
     return user
+
+def check_email(email):
+    myConnection=get_connection()
+    email=None
+    with myConnection.cursor() as cursor:
+        cursor.execute("SELECT email FROM user WHERE email=%s",(email,))
+        email=cursor.fetchone()
+    myConnection.close()
+    return email

@@ -170,10 +170,13 @@ def add_user():
     my_Data = request.files['ufilephoto']
     filename = secure_filename(my_Data.filename)
     my_Data.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
-    user_controller.add_user(name, email, password)
-    pyautogui.alert(text='Successfully saved', title='MESSAGE', button='OK')
-    """ flash('The file has been uploaded') """
-    return redirect('/user')
+    try:
+        user_controller.add_user(name, email, password)
+        pyautogui.alert(text='Successfully saved', title='MESSAGE', button='OK')
+        return redirect('/user')
+    except:
+        pyautogui.alert(text='The email address already exists', title='ERROR', button='OK')
+        return redirect(url_for('add_user_form'))
 
 #Get the user to edit
 @app.route('/edit_user/<int:id>')
