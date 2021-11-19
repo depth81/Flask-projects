@@ -30,14 +30,11 @@ def login():
         #Validate the user input
         isValidUser = user_controller.login(session['email'],session['password'])
         if(isValidUser):
-            session['logged_in'] = True
             return redirect(url_for('customer'))
         else:
             pyautogui.alert(text='The combination email/password does not exist', title='ERROR', button='ACCEPT')
-            session['logged_in'] = False
             session.clear()
             return redirect('/index')
-
 
 @app.route('/logout',methods=['GET','POST'])
 def logout():
