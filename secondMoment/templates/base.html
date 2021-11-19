@@ -8,7 +8,7 @@
     <!--Poner un block para que luego pueda ser remplazado en las siguientes plantillas; lo mismo con el  block contenido-->
     <title>CRUD INVOICE with Flask - {% block title %}{% endblock %}</title>
     <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css"> -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <link href="{{url_for('static', filename ='css/myStyles.css')}}" rel="stylesheet">
 
@@ -20,14 +20,18 @@
         <div class='nav-container'>
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
             <div class="topnav" id="myTopnav">
-                <a href="{{url_for('index')}}" class="active">Customer</a>
+                <a href="{{url_for('index')}}" class="active">Home</a>
+                <a href="{{url_for('customer')}}" class="active">Customer</a>
                 <a href="{{url_for('invoice')}}" class="inactive">Invoice</a>
                 <a href="{{url_for('user')}}" class="inactive">User</a>
                 <a href="#contact"  class="inactive">Contact</a>
                 <a href="#about" class="inactive">About</a>
+                <a href="/logout">Log out</a>
             </div>
         </div>
     </nav>
+
+    <p>Welcome: {{session['email']}}</p>
 
     {%block content %} {% endblock %}
 

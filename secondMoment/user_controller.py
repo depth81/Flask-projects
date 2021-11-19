@@ -1,5 +1,14 @@
 from configdb import get_connection
 
+def login(email, password):
+    myConnection = get_connection()
+    user=None
+    with myConnection.cursor() as cursor:
+        cursor.execute("SELECT name, email, password FROM user WHERE email=%s AND password=%s",(email,password))
+        user=cursor.fetchone()
+    myConnection.close()
+    return user
+
 def add_user(name, email, password):
     myConnection = get_connection()
     with myConnection.cursor() as cursor:

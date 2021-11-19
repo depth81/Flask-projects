@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, url_for, flash, request
+from flask import Flask, render_template, url_for, flash, request, session
 from werkzeug.utils import redirect
 import customer_controller
 import invoice_controller
@@ -16,8 +16,42 @@ app.config['UPLOAD_FOLDER'] = 'static/images'
 @app.route('/')
 @app.route('/index')
 def index():
-    customers = customer_controller.get_customer()
-    return render_template('index.html',customers=customers)
+    return render_template('login.html')
+
+@app.route('/login',methods=['POST'])
+def login():
+    if request.method == "POST":
+        # capture data from login.html
+        email = request.form['email']
+        password = request.form['password']
+        # Create session variables
+        session['email'] = email
+        session['password'] = password
+        #Validate the user input
+        isValidUser = user_controller.login(session['email'],session['password'])
+        if(isValidUser):
+            session['logged_in'] = True
+            return redirect(url_for('customer'))
+        else:
+            pyautogui.alert(text='The combination email/password does not exist', title='ERROR', button='ACCEPT')
+            session['logged_in'] = False
+            session.clear()
+            return redirect('/index')
+
+
+@app.route('/logout',methods=['GET','POST'])
+def logout():
+    #Delete session variables
+    session.clear()
+    return redirect(url_for('index'))
+
+@app.route('/customer')
+def customer():
+    if "email" not in session:
+        return redirect(url_for('index'))
+    else:
+        customers = customer_controller.get_customer()
+        return render_template('customer.html',customers=customers)
 
 @app.route('/add_customer_form')
 def add_customer_form():
@@ -63,8 +97,11 @@ def delete_customer():
 #---INVOICE---
 @app.route('/invoice')
 def invoice():
-    invoices = invoice_controller.get_invoice()
-    return render_template('invoice.html',invoices=invoices)
+    if "email" not in session:
+        return redirect(url_for('index'))
+    else:
+        invoices = invoice_controller.get_invoice()
+        return render_template('invoice.html',invoices=invoices)
 
 @app.route('/add_invoice_form')
 def add_invoice_form():
@@ -118,8 +155,11 @@ def delete_invoice():
 #---USER---
 @app.route('/user')
 def user():
-    users = user_controller.get_user()
-    return render_template('user.html',users=users)
+    if 'email' not in session:
+        return redirect(url_for('index'))
+    else:
+        users = user_controller.get_user()
+        return render_template('user.html',users=users)
 
 @app.route('/add_user_form')
 def add_user_form():
