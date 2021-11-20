@@ -18,27 +18,25 @@ app.config['UPLOAD_FOLDER'] = 'static/images'
 def index():
     return render_template('login.html')
 
-@app.route('/login',methods=['POST'])
+@app.route('/login',methods=['GET','POST'])
 def login():
+    error=None
     if request.method == "POST":
-        # capture data from login.html
         email = request.form['email']
         password = request.form['password']
-        # Create session variables
         session['email'] = email
         session['password'] = password
-        #Validate the user input
-        isValidUser = user_controller.login(session['email'],session['password'])
+        isValidUser = user_controller.login(email,password)
         if(isValidUser):
+            flash('Successfully logged in!')
             return redirect(url_for('customer'))
         else:
-            pyautogui.alert(text='The combination email/password does not exist', title='ERROR', button='ACCEPT')
+            pyautogui.alert(text='The combination email/password does not exist', title='ERROR', button='OK')
             session.clear()
             return redirect('/index')
-
+            
 @app.route('/logout',methods=['GET','POST'])
 def logout():
-    #Delete session variables
     session.clear()
     return redirect(url_for('index'))
 
@@ -60,7 +58,7 @@ def add_customer():
     status = request.form['status']
     mobile = request.form['mobile']
     customer_controller.add_customer(name,status,mobile)
-    return redirect('/')
+    return redirect('/customer')
 
 #Get the customer to edit
 @app.route('/edit_customer/<int:id>')
@@ -76,7 +74,7 @@ def update_customer():
     status = request.form['status']
     mobile = request.form['mobile']
     customer_controller.update_customer(name,status,mobile,id)
-    return redirect('/')
+    return redirect('/customer')
 
 @app.route("/delete_customer", methods=["POST"])
 def delete_customer():
@@ -88,7 +86,7 @@ def delete_customer():
         print("You have pending invoices")
     else:
         customer_controller.delete_customer(id)
-    return redirect('/index')
+    return redirect('/customer')
 
 
 #---INVOICE---

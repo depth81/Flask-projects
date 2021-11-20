@@ -46,10 +46,10 @@ display: none;
     padding-top: 20px;
 }
 
-.container{
-    height: auto;
+/* .container{
+    height: 'auto';
     width: 80%;
-}
+} */
 
 table{
     border-style: solid;
