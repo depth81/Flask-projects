@@ -69,3 +69,8 @@ table, th, td {
 .btn-success{
     margin-right: 20px;
 }
+
+.logincontainer{
+    width: 500px;
+    margin: auto;
+}
