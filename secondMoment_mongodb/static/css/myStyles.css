@@ -1,0 +1,76 @@
+/* Add a black background color to the top navigation */
+.topnav {
+background-color: #5679CA;
+overflow: hidden;
+margin-bottom: 30px;
+}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+float: left;
+display: block;
+color: #f2f2f2;
+text-align: center;
+padding: 14px 16px;
+text-decoration: none;
+font-size: 20px;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+background-color: #ddd;
+color: black;
+}
+
+/* Add an active class to highlight the current page */
+/* .topnav a.active {
+background-color: #04AA6D;
+color: white;
+} */
+
+/* Hide the link that should open and close the topnav on small screens */
+.topnav .icon {
+display: none;
+}
+
+/*Footer*/
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    height: 60px;
+    width: 100%;
+    background-color: #5679CA;
+    color: white;
+    text-align: center;
+    padding-top: 20px;
+}
+
+/* .container{
+    height: 'auto';
+    width: 80%;
+} */
+
+table{
+    border-style: solid;
+    margin-top: 40px;
+}
+
+table thead{
+    background-color:#56B0CA;
+}
+
+table, th, td {
+    border: 1px solid black;
+    text-align: center;
+    justify-content: center;
+}
+
+.btn-success{
+    margin-right: 20px;
+}
+
+.logincontainer{
+    width: 500px;
+    margin: auto;
+}
