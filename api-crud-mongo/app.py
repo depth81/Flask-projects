@@ -3,8 +3,10 @@ from flask_pymongo import PyMongo
 from bson import json_util
 from bson.objectid import ObjectId
 from werkzeug.wrappers import response
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 #Conection to DB
 app.config["MONGO_URI"] = "mongodb://localhost:27017/dbLibrary"
