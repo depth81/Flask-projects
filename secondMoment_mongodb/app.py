@@ -96,8 +96,17 @@ def get_invoice(id):
 
 @app.route('/invoices/<id>', methods=['DELETE'])
 def delete_invoice(id):
-    mongo.db.invoices.delete_one({'_id':ObjectId(id)})
-    response = jsonify({"Message":"The invoice with id: " + id + " was deleted successfully"})
+    invoice = mongo.db.invoices.find_one({"_id":ObjectId(id)})
+    print(invoice)
+    print(invoice)
+    response = json_util.dumps(invoice)
+    index1 = int(response.find('balance'))
+    balance = int(response[index1+11:-2])
+    if(balance==0):
+        mongo.db.invoices.delete_one({'_id':ObjectId(id)})
+        response = jsonify({"Message":"The invoice with id: " + id + " was deleted successfully"})
+    else:
+        response = jsonify({"message":"Forbidden. The balance is not 0"})
     return response
 
 @app.route('/invoices/<_id>', methods=['PUT'])
