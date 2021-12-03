@@ -42,11 +42,8 @@ def delete_customer(id):
     customer = mongo.db.customers.find_one({"_id":ObjectId(id)},{ "_id": 0, "name": 1})
     response1 = json_util.dumps(customer)
     customer_name = response1[10:-2]
-    print(customer_name)
     invoices = mongo.db.invoices.find({"customer":customer_name})
     response2 = json_util.dumps(invoices)
-    print(response2)
-    print(len(response2))
     if response2 != '[]':
         response = jsonify({"message":"Forbidden. You have invoices to pay yet"})
         return response
@@ -122,5 +119,4 @@ def update_invoice(_id):
 #The server is listening...
 if __name__ == "__main__":
     app.run(debug=True, port=5600)
-    
-    
+
