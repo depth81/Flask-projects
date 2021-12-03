@@ -97,8 +97,6 @@ def get_invoice(id):
 @app.route('/invoices/<id>', methods=['DELETE'])
 def delete_invoice(id):
     invoice = mongo.db.invoices.find_one({"_id":ObjectId(id)})
-    print(invoice)
-    print(invoice)
     response = json_util.dumps(invoice)
     index1 = int(response.find('balance'))
     balance = int(response[index1+11:-2])
