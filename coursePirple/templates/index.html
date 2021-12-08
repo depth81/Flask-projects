@@ -2,10 +2,14 @@
 
 {% block main %}
     <h1>This is the Homepage</h1>
-    <form action="/" method='POST'>
+    <form action="/login" method='POST'>
         <input placeholder="Username" name="username" type="text">
         <input placeholder="Password" name="password" type="password">
         <input type="submit">
     </form>
     <p>{{message}}</p>
+    <br>
+    <br>
+    <br>
+    <a href="/signup">SIGN UP HERE</a>
 {% endblock main %}
